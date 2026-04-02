@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Session {
+  id              String      @id @default(uuid()) @db.Uuid
+  userEmail       String      @map("user_email") @db.VarChar(255)
+  sessionName     String?     @map("session_name") @db.VarChar(255)
+  topic           String?     @db.VarChar(50)
+  maturityLevel   String?     @map("maturity_level") @db.VarChar(50)
+  startedAt       DateTime    @default(now()) @map("started_at")
+  endedAt         DateTime?   @map("ended_at")
+  status          String?     @default("active") @db.VarChar(20)
+  keyInsights     Json?       @map("key_insights")
+  nextFocus       String?     @map("next_focus") @db.Text
+  createdAt       DateTime    @default(now()) @map("created_at")
+
+  dialogues       Dialogue[]
+  caseStudies     CaseStudy[]
+
+  @@index([userEmail])
+  @@map("sessions")
+}
+
+model Dialogue {
+  id              Int         @id @default(autoincrement())
+  sessionId       String      @map("session_id") @db.Uuid
+  session         Session     @relation(fields: [sessionId], references: [id])
+  round           Int?
+  pelatisMessage  String?     @map("pelatis_message") @db.Text
+  layer1Output    Json?       @map("layer1_output")
+  layer2Output    Json?       @map("layer2_output")
+  sophiaQuestion  String?     @map("sophia_question") @db.Text
+  sophiaThinking  String?     @map("sophia_thinking") @db.Text
+  tokensUsed      Int?        @map("tokens_used")
+  costUsd         Decimal?    @map("cost_usd") @db.Decimal(10, 5)
+  createdAt       DateTime    @default(now()) @map("created_at")
+
+  @@index([sessionId])
+  @@map("dialogues")
+}
+
+model CaseStudy {
+  id                Int         @id @default(autoincrement())
+  sessionId         String      @map("session_id") @db.Uuid
+  session           Session     @relation(fields: [sessionId], references: [id])
+  title             String?     @db.VarChar(255)
+  summary           String?     @db.Text
+  keyInsight        String?     @map("key_insight") @db.Text
+  criticalQuestions Json?       @map("critical_questions")
+  resolution        String?     @db.Text
+  lessonsLearned    Json?       @map("lessons_learned")
+  published         Boolean?    @default(false)
+  createdAt         DateTime    @default(now()) @map("created_at")
+
+  @@index([sessionId])
+  @@map("case_studies")
+}
