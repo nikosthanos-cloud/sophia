@@ -3,21 +3,20 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
 }
 
 model Session {
-  id              String      @id @default(uuid()) @db.Uuid
-  userEmail       String      @map("user_email") @db.VarChar(255)
-  sessionName     String?     @map("session_name") @db.VarChar(255)
-  topic           String?     @db.VarChar(50)
-  maturityLevel   String?     @map("maturity_level") @db.VarChar(50)
+  id              String      @id @default(uuid())
+  userEmail       String      @map("user_email")
+  sessionName     String?     @map("session_name")
+  topic           String?
+  maturityLevel   String?     @map("maturity_level")
   startedAt       DateTime    @default(now()) @map("started_at")
   endedAt         DateTime?   @map("ended_at")
-  status          String?     @default("active") @db.VarChar(20)
+  status          String?     @default("active")
   keyInsights     Json?       @map("key_insights")
-  nextFocus       String?     @map("next_focus") @db.Text
+  nextFocus       String?     @map("next_focus")
   createdAt       DateTime    @default(now()) @map("created_at")
 
   dialogues       Dialogue[]
@@ -29,16 +28,16 @@ model Session {
 
 model Dialogue {
   id              Int         @id @default(autoincrement())
-  sessionId       String      @map("session_id") @db.Uuid
+  sessionId       String      @map("session_id")
   session         Session     @relation(fields: [sessionId], references: [id])
   round           Int?
-  pelatisMessage  String?     @map("pelatis_message") @db.Text
+  pelatisMessage  String?     @map("pelatis_message")
   layer1Output    Json?       @map("layer1_output")
   layer2Output    Json?       @map("layer2_output")
-  sophiaQuestion  String?     @map("sophia_question") @db.Text
-  sophiaThinking  String?     @map("sophia_thinking") @db.Text
+  sophiaQuestion  String?     @map("sophia_question")
+  sophiaThinking  String?     @map("sophia_thinking")
   tokensUsed      Int?        @map("tokens_used")
-  costUsd         Decimal?    @map("cost_usd") @db.Decimal(10, 5)
+  costUsd         Decimal?    @map("cost_usd")
   createdAt       DateTime    @default(now()) @map("created_at")
 
   @@index([sessionId])
@@ -47,13 +46,13 @@ model Dialogue {
 
 model CaseStudy {
   id                Int         @id @default(autoincrement())
-  sessionId         String      @map("session_id") @db.Uuid
+  sessionId         String      @map("session_id")
   session           Session     @relation(fields: [sessionId], references: [id])
-  title             String?     @db.VarChar(255)
-  summary           String?     @db.Text
-  keyInsight        String?     @map("key_insight") @db.Text
+  title             String?
+  summary           String?
+  keyInsight        String?     @map("key_insight")
   criticalQuestions Json?       @map("critical_questions")
-  resolution        String?     @db.Text
+  resolution        String?
   lessonsLearned    Json?       @map("lessons_learned")
   published         Boolean?    @default(false)
   createdAt         DateTime    @default(now()) @map("created_at")

@@ -52,8 +52,8 @@ export default function ChatSession({ params }: { params: { id: string } }) {
 
         <div className="flex-1 p-6 overflow-y-auto space-y-6">
           {messages.map((msg, i) => (
-            <div key={i} className={\`flex \${msg.role === "user" ? "justify-end" : "justify-start"}\`}>
-              <div className={\`max-w-[80%] p-4 rounded-2xl \${msg.role === "user" ? "bg-black text-white rounded-br-none" : "bg-gray-100 text-black rounded-bl-none"}\`}>
+            <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div className={`max-w-[80%] p-4 rounded-2xl ${msg.role === "user" ? "bg-black text-white rounded-br-none" : "bg-gray-100 text-black rounded-bl-none"}`}>
                 <p className="whitespace-pre-wrap text-sm leading-relaxed">{msg.text}</p>
               </div>
             </div>

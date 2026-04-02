@@ -1,4 +1,3 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import Anthropic from "@anthropic-ai/sdk";
@@ -14,17 +13,13 @@ const anthropic = new Anthropic({
 
 export async function POST(req: Request) {
   try {
-    const { userId } = auth();
-    if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const userId = "dev_user_123";
 
     const body = await req.json();
     const { sessionId, userMessage } = body;
 
     // Verify session belongs to user
-    const user = await currentUser();
-    const email = user?.emailAddresses[0]?.emailAddress;
+    const email = "dev@localhost.dev";
 
     const session = await prisma.session.findUnique({
       where: { id: sessionId },
