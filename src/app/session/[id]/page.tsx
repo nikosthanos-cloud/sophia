@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 
-export default function ChatSession({ params }: { params: { id: string } }) {
+export default function ChatSession({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const [messages, setMessages] = useState<{ role: "user" | "sophia"; text: string }[]>([
     { role: "sophia", text: "Hello. I am Sophia. What would you like to explore today?" },
   ]);
@@ -21,7 +22,7 @@ export default function ChatSession({ params }: { params: { id: string } }) {
       const res = await fetch("/api/dialogue", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId: params.id, userMessage: userMsg }),
+        body: JSON.stringify({ sessionId: id, userMessage: userMsg }),
       });
       const data = await res.json();
 
