@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 
 export async function POST(req: Request) {
   try {
+    const prisma = getPrisma();
     const userId = "dev_user_123";
     const email = "dev@localhost.dev";
 
