@@ -11,7 +11,7 @@ export default async function AdminDashboard() {
           </div>
           <div className="text-right">
             <p className="text-sm text-gray-500">Logged in as admin:</p>
-            <p className="font-semibold">admin@localhost.dev (local bypass)</p>
+            <p className="font-semibold">admin@sophia.ai (Production)</p>
           </div>
         </header>
 
