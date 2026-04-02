@@ -14,6 +14,12 @@ export async function POST(req: Request) {
     });
     const userId = "dev_user_123";
 
+    // Helper to safely parse JSON from LLM responses (strips markdown backticks)
+    const parseLLMJSON = (text: string) => {
+      const clean = text.replace(/```json\n?|```/g, "").trim();
+      return JSON.parse(clean);
+    };
+
     const body = await req.json();
     const { sessionId, userMessage } = body;
 
@@ -49,7 +55,7 @@ export async function POST(req: Request) {
     // Fallbacks and extractions
     let layer1Result: any = {};
     if (layer1Msg.content[0].type === "text") {
-        layer1Result = JSON.parse(layer1Msg.content[0].text);
+        layer1Result = parseLLMJSON(layer1Msg.content[0].text);
     }
 
     // =============================================
@@ -64,7 +70,7 @@ export async function POST(req: Request) {
 
     let layer2Result: any = {};
     if (layer2Msg.content[0].type === "text") {
-        layer2Result = JSON.parse(layer2Msg.content[0].text);
+        layer2Result = parseLLMJSON(layer2Msg.content[0].text);
     }
 
     // =============================================
@@ -79,7 +85,7 @@ export async function POST(req: Request) {
 
     let layer3Result: any = {};
     if (layer3Msg.content[0].type === "text") {
-        layer3Result = JSON.parse(layer3Msg.content[0].text);
+        layer3Result = parseLLMJSON(layer3Msg.content[0].text);
     }
 
     // Track tokens & cost roughly
