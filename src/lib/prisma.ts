@@ -4,9 +4,17 @@ let prismaInstance: PrismaClient | null = null;
 
 export function getPrisma(): PrismaClient {
   if (!prismaInstance) {
-    prismaInstance = new PrismaClient();
+    if (!process.env.DATABASE_URL) {
+      throw new Error("DATABASE_URL environment variable is not set");
+    }
+
+    prismaInstance = new PrismaClient({
+      datasources: {
+        db: {
+          url: process.env.DATABASE_URL,
+        },
+      },
+    });
   }
   return prismaInstance;
 }
-
-export default getPrisma;
