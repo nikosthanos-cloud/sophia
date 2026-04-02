@@ -77,7 +77,7 @@ export async function POST(req: Request) {
     // LAYER 3: RESPOND (Sonnet)
     // =============================================
     const layer3Msg = await anthropic.messages.create({
-      model: "claude-3-5-sonnet-20241022",
+      model: "claude-sonnet-4-20250514",
       max_tokens: 1000,
       system: layer3_respond_system,
       messages: [{ role: "user", content: layer3_respond_user(userMessage, layer2Result.contradiction || "", layer2Result.maturity_level || "idea", previousInsights) }],
