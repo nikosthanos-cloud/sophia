@@ -1,12 +1,11 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/lib/prisma";
 import Anthropic from "@anthropic-ai/sdk";
 
 import { layer1_understand_system, layer1_understand_user } from "../../../lib/prompts/layer1";
 import { layer2_diagnose_system, layer2_diagnose_user } from "../../../lib/prompts/layer2";
 import { layer3_respond_system, layer3_respond_user } from "../../../lib/prompts/layer3";
 
-const prisma = new PrismaClient();
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
