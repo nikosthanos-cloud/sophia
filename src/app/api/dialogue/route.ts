@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     // LAYER 1: UNDERSTAND (Haiku)
     // =============================================
     const layer1Msg = await anthropic.messages.create({
-      model: "claude-3-haiku-20240307",
+      model: "claude-3-5-haiku-20241022",
       max_tokens: 1000,
       system: layer1_understand_system,
       messages: [{ role: "user", content: layer1_understand_user(userMessage, historyLength, previousAssumptions) }],
@@ -56,7 +56,7 @@ export async function POST(req: Request) {
     // LAYER 2: DIAGNOSE (Haiku)
     // =============================================
     const layer2Msg = await anthropic.messages.create({
-      model: "claude-3-haiku-20240307",
+      model: "claude-3-5-haiku-20241022",
       max_tokens: 1000,
       system: layer2_diagnose_system,
       messages: [{ role: "user", content: layer2_diagnose_user(layer1Result.what_he_said || userMessage, layer1Result.implied_assumptions || [], historyLength, previousInsights) }],
